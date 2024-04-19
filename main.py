@@ -1,9 +1,17 @@
 from flask import Flask, render_template
 import requests
+from post import Post
+
 
 blog_url = "https://api.npoint.io/15098e959ebff5d1f390"
 response = requests.get(blog_url)
-all_posts = response.json()
+all_posts_data = response.json()
+all_posts = []
+for post in all_posts_data:
+    post_entry = Post(post_id=post["id"],title=post["title"],subtitle=post["subtitle"], body=post["body"])
+    all_posts.append(post_entry)
+
+
 app = Flask(__name__)
 
 @app.route('/')
